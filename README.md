@@ -1,3 +1,5 @@
+![Nethere Logo](https://github.com/mapikit/nethere/blob/main/Nethere_Logo_Horizontal.svg?raw=true)
+
 Bring the entire internet to you with Nethere! Nethere is a tool for downloading and unpacking files from the web, saving them to disk or just reading them in memory. All of this while still being simple to use and having **no dependencies**.
 
 It is fully compatible with typescript and concurs to the ESM format.
