@@ -1,50 +1,50 @@
 /* eslint-disable max-lines-per-function */
 import { get } from "https";
-import { mkdir, writeFileSync } from "fs";
-import { join } from "path";
-import { unpack } from "./method-decider.js";
-import { inspect } from "util";
+import { UnpackedFile } from "./types.js";
+import { extractZip } from "./extraction-types/zip.js";
+import { unpackTarFile } from "./extraction-types/tar.js";
 
-export async function downloadAndUnzip (url : string, identifier : string) : Promise<void> {
-  return new Promise((resolve, reject) => {
-    let fileData = Buffer.alloc(0);
-    get(url, (response) => {
-      if (response.statusCode === 302 || response.statusCode === 301) {
-        downloadAndUnzip(response.headers.location, identifier).catch(console.log);
-        return;
-      }
+export class Nethere {
+  public static async downloadToDisk (url : string, destination : string) : Promise<void> {
+    const fs = await import("fs");
+    const path = await import("path");
 
-      response.on("data", (chunk) => {
-        fileData = Buffer.concat([fileData, chunk]);
-      });
+    const data = await this.downloadToMemory(url);
+    for(const file of data) {
+      const fileDestination = file.header ? path.resolve(destination, file.header.name) : path.resolve(destination);
+      fs.mkdirSync(path.dirname(fileDestination), { recursive: true });
+      if(fs.statSync(fileDestination).isDirectory()) continue;
+      fs.writeFileSync(fileDestination, file.data);
+    }
+  }
 
-      const basedir = "src/download";
-      response.on("end", () => {
-        const basePath = join(basedir, identifier);
-        if(response.headers["content-type"] === "application/zip") {
-          const unpacked = unpack(fileData);
-          console.log(inspect(unpacked, false, null, true));
+  public static async downloadToMemory (url : string) : Promise<UnpackedFile[]> {
+    return new Promise((resolve, reject) => {
+      let fileData = Buffer.alloc(0);
+      get(url, (response) => {
+        if (response.statusCode === 302 || response.statusCode === 301) {
+          this.downloadToMemory(response.headers.location)
+            .then(result => resolve(result))
+            .catch(console.error);
+          return;
         }
-        else {
 
-          const urlArr = url.split("/");
-          mkdir(basePath, () => {
-            writeFileSync(join(basePath, urlArr[urlArr.length - 1]), fileData);
-          });
-        }
-        resolve();
-      });
+        response.on("data", (chunk) => {
+          fileData = Buffer.concat([fileData, chunk]);
+        });
 
-      response.on("error", (error) => {
-        reject(error);
+        response.on("end", () => {
+          switch(response.headers["content-type"]) {
+            case "application/zip": resolve(extractZip(fileData)); return;
+            case "application/x-tar": resolve(unpackTarFile(fileData)); return;
+            default: resolve([{ header: undefined, data: fileData }]); return;
+          }
+        });
+
+        response.on("error", (error) => {
+          reject(error);
+        });
       });
     });
-  });
-};
-
-
-
-downloadAndUnzip("https://www.github.com/mapikit/meta-system/archive/refs/heads/master.zip", "asdq").catch(console.log);
-
-//downloadAndUnzip("https://fiddle.jshell.net/robots.txt","robots").catch(console.log);
-
+  }
+}

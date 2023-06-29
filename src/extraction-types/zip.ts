@@ -33,7 +33,6 @@ export function extractZip (buffer : Buffer) : Array<UnpackedFile> {
       const fileContentStart = offset + 30 + fileNameLength;
       const fileContent = buffer.subarray(fileContentStart, fileContentStart + extraFieldLength + compressedSize);
 
-
       // Extract the file content
       const decompressedContent = decompress(fileContent, compression);
       result.push({

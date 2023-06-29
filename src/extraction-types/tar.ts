@@ -1,20 +1,23 @@
-import pako from "pako";
 import { UnpackedFile } from "../types.js";
+// import { inflateSync } from "zlib";
 
-export function unpackTgzFile (gzFile : ArrayBuffer) : Array<UnpackedFile> {
-  const tarFile = ungzip(gzFile);
-  const tarEntries = unpackTarFile(tarFile);
-  return tarEntries;
-}
+// export function unpackTgzFile (gzFile : ArrayBuffer) : Array<UnpackedFile> {
+//   const tarFile = ungzip(gzFile);
+//   const tarEntries = unpackTarFile(tarFile);
+//   return tarEntries;
+// }
 
-function ungzip (gzFile : ArrayBuffer) : ArrayBuffer {
-  const gzFileView = new Uint8Array(gzFile);
-  const tarFile = pako.inflate(gzFileView);
-  return tarFile.buffer;
-}
+// function ungzip (gzFile : ArrayBuffer) : ArrayBuffer {
+//   const gzFileView = new Uint8Array(gzFile);
+//   const tarFile = inflateSync(gzFileView);
+//   return tarFile.buffer;
+// }
+
 
 // eslint-disable-next-line max-lines-per-function
-export function unpackTarFile (tarFile : ArrayBuffer) : Array<UnpackedFile> {
+export function unpackTarFile (tarFileBuffer : Buffer) : Array<UnpackedFile> {
+
+  const tarFile = toArrayBuffer(tarFileBuffer);
   const tarFileView = new DataView(tarFile);
   const tarEntries : Array<UnpackedFile>= [];
   let offset = 0;
@@ -50,7 +53,6 @@ export function unpackTarFile (tarFile : ArrayBuffer) : Array<UnpackedFile> {
     tarEntries.push({ header, data: Buffer.from(entryData) });
     offset = entryEnd;
   }
-
   return tarEntries;
 }
 
@@ -66,3 +68,11 @@ function readString (dataView : DataView, offset : number, length : number) : st
   return str;
 }
 
+function toArrayBuffer (buffer : Buffer) : ArrayBuffer {
+  const arrayBuffer = new ArrayBuffer(buffer.length);
+  const view = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < buffer.length; ++i) {
+    view[i] = buffer[i];
+  }
+  return arrayBuffer;
+}
