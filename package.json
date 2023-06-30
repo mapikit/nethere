@@ -4,7 +4,8 @@
   "description": "Download and unzip files, repos and more",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm ci && npx tsc -p tsconfig.build.json"
   },
   "keywords": [
     "download",
