@@ -1,18 +1,24 @@
-<svg width="280.48" height="45.099" version="1.1" viewBox="0 0 74.209 11.932" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(-91.858 -112.33)">
-  <g transform="translate(-136.51 -146.18)">
-   <g transform="matrix(1.124 0 0 1.124 138.04 7.3282)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width=".88968">
-    <path d="m82.491 233.46s0.51663-8.3051-0.36345-9.294c-0.67194-0.75496-2.0689 0.34341-0.81233 1.4242 0.57692 0.49621 1.4039 0.8258 2.1569 1.2552"/>
-    <path d="m93.899 224.1s-0.51663 8.3051 0.36345 9.294c0.67194 0.75495 2.0689-0.34341 0.81233-1.4242-0.57692-0.49622-1.4039-0.8258-2.1569-1.2552"/>
-   </g>
-   <g transform="matrix(1.124 0 0 1.124 98.932 -15.87)">
-    <g transform="matrix(-1 0 0 1 211.18 0)" fill="#34bca5" fill-rule="evenodd">
-     <path d="m91.005 248.28c0.31886 0 0.57542 0.25683 0.57542 0.57569v2.9788c0 0.31886-0.25656 0.57569-0.57542 0.57569h-0.54675c-0.31885 0-0.57568-0.25683-0.57568-0.57569v-2.9788c0-0.31886 0.25683-0.57569 0.57568-0.57569z"/>
-     <path d="m88.468 247.42c0.15943 0 0.30335 0.0642 0.40741 0.16813 0.10407 0.104 0.16827 0.24786 0.16827 0.40729v3.7446c0 0.15943-0.0642 0.30336-0.16827 0.40743-0.10406 0.10406-0.24798 0.16826-0.40741 0.16826h-0.54675c-0.15943 0-0.30328-0.0642-0.40728-0.16826-0.104-0.10407-0.16814-0.248-0.16814-0.40743v-3.7446c0-0.15943 0.0642-0.30329 0.16814-0.40729 0.104-0.104 0.24785-0.16813 0.40728-0.16813h0.27338z"/>
-     <path d="m85.933 248.28c0.31886 0 0.57542 0.25683 0.57542 0.57569v2.9788c0 0.31886-0.25656 0.57569-0.57542 0.57569h-0.54675c-0.31885 0-0.57568-0.25683-0.57568-0.57569v-2.9788c0-0.31886 0.25683-0.57569 0.57568-0.57569z"/>
+<svg width="505.03" height="99.319" version="1.1" viewBox="0 0 133.62 26.278" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(-117.59 -96.774)">
+  <g transform="translate(-137.62 -114.88)">
+   <rect x="255.21" y="211.66" width="133.62" height="26.278" rx="1.9833" ry="1.9833" fill="#14131b" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="5.4" stroke-width="3"/>
+   <rect x="257.76" y="213.92" width="21.749" height="21.749" rx="3.9571" ry="3.9571" fill="#262432" fill-rule="evenodd"/>
+   <g transform="translate(31.462 -39.682)">
+    <g transform="matrix(1.124 0 0 1.124 138.04 7.3282)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width=".88968">
+     <path d="m82.491 233.46s0.51663-8.3051-0.36345-9.294c-0.67194-0.75496-2.0689 0.34341-0.81233 1.4242 0.57692 0.49621 1.4039 0.8258 2.1569 1.2552"/>
+     <path d="m93.899 224.1s-0.51663 8.3051 0.36345 9.294c0.67194 0.75495 2.0689-0.34341 0.81233-1.4242-0.57692-0.49622-1.4039-0.8258-2.1569-1.2552"/>
+    </g>
+    <g transform="matrix(1.124 0 0 1.124 98.932 -15.87)">
+     <g transform="matrix(-1 0 0 1 211.18 0)" fill="#34bca5" fill-rule="evenodd">
+      <path d="m91.005 248.28c0.31886 0 0.57542 0.25683 0.57542 0.57569v2.9788c0 0.31886-0.25656 0.57569-0.57542 0.57569h-0.54675c-0.31885 0-0.57568-0.25683-0.57568-0.57569v-2.9788c0-0.31886 0.25683-0.57569 0.57568-0.57569z"/>
+      <path d="m88.468 247.42c0.15943 0 0.30335 0.0642 0.40741 0.16813 0.10407 0.104 0.16827 0.24786 0.16827 0.40729v3.7446c0 0.15943-0.0642 0.30336-0.16827 0.40743-0.10406 0.10406-0.24798 0.16826-0.40741 0.16826h-0.54675c-0.15943 0-0.30328-0.0642-0.40728-0.16826-0.104-0.10407-0.16814-0.248-0.16814-0.40743v-3.7446c0-0.15943 0.0642-0.30329 0.16814-0.40729 0.104-0.104 0.24785-0.16813 0.40728-0.16813h0.27338z"/>
+      <path d="m85.933 248.28c0.31886 0 0.57542 0.25683 0.57542 0.57569v2.9788c0 0.31886-0.25656 0.57569-0.57542 0.57569h-0.54675c-0.31885 0-0.57568-0.25683-0.57568-0.57569v-2.9788c0-0.31886 0.25683-0.57569 0.57568-0.57569z"/>
+     </g>
     </g>
    </g>
-   <text x="249.14551" y="269.79941" fill="#ffffff" fill-rule="evenodd" font-family="'Josefin Slab'" font-size="14.162px" font-weight="600" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="5.4" stroke-width="1.3373" xml:space="preserve"><tspan x="249.14551" y="269.79941" fill="#ffffff" font-family="'Roboto Slab'" font-size="14.162px" font-weight="normal" stroke="none" stroke-width="1.3373" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">Nethere</tspan></text>
+   <g transform="matrix(1.9098 0 0 1.9098 -355.56 -319.27)" stroke-width=".52362">
+    <text x="336.20541" y="290.43692" fill="#ffffff" fill-rule="evenodd" font-family="'Josefin Slab'" font-size="14.162px" font-weight="600" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="5.4" stroke-width=".70024" xml:space="preserve"><tspan x="336.20541" y="290.43692" fill="#ffffff" font-family="'Roboto Slab'" font-size="14.162px" font-weight="normal" stroke="none" stroke-width=".70024" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">Nethere</tspan></text>
+   </g>
   </g>
  </g>
 </svg>

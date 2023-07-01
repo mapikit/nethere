@@ -17,7 +17,7 @@ This method downloads and unpacks (if necessary) the file in the url, then saves
 ## Examples:
 
 ```typescript
-import { Nethere } from "Nethere";
+import { Nethere } from "nethere";
 
 Nethere.downloadToMemory("https://link/to/my/file.tar")
   .then(result => console.log(result))
