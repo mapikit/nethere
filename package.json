@@ -1,6 +1,6 @@
 {
   "name": "nethere",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Download and unzip files, repos and more",
   "main": "index.js",
   "scripts": {

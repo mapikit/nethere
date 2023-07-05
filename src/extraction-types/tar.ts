@@ -1,17 +1,4 @@
 import { UnpackedFile } from "../types.js";
-// import { inflateSync } from "zlib";
-
-// export function unpackTgzFile (gzFile : ArrayBuffer) : Array<UnpackedFile> {
-//   const tarFile = ungzip(gzFile);
-//   const tarEntries = unpackTarFile(tarFile);
-//   return tarEntries;
-// }
-
-// function ungzip (gzFile : ArrayBuffer) : ArrayBuffer {
-//   const gzFileView = new Uint8Array(gzFile);
-//   const tarFile = inflateSync(gzFileView);
-//   return tarFile.buffer;
-// }
 
 
 // eslint-disable-next-line max-lines-per-function
