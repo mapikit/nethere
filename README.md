@@ -54,5 +54,5 @@ Support to urls that point to repos is planned.
 
 ### Compressed File Support
  - .tar (Full Support)
- - .zip (Partial Support - Some deflated files will cause errors)
- - .tgz (Planned Support)
+ - .zip (Full Support)
+ - .tgz (Full Support)
