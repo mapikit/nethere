@@ -1,22 +1,14 @@
-import { inflateSync } from "zlib";
+import { unzipSync } from "zlib";
 import { unpackTarFile } from "./tar.js";
 import { UnpackedFile } from "types.js";
-import { readFileSync } from "fs";
 
 export function unpackTgzFile (gzFile : Buffer) : Array<UnpackedFile> {
-  const tarFile = ungzip(gzFile);
+  const tarFile = ungzip(new Uint8Array(gzFile));
   const tarEntries = unpackTarFile(tarFile);
   return tarEntries;
 }
 
-function ungzip (gzFile : Buffer) : Buffer {
-  const gzFileView = new Uint8Array(gzFile);
-  const tarFile = inflateSync(gzFileView);
+function ungzip (gzFile : Uint8Array) : Buffer {
+  const tarFile = unzipSync(gzFile);
   return Buffer.from(tarFile.buffer);
 }
-
-
-const file = readFileSync("./node-core-test-3.3.0.tar.gz");
-const res = unpackTgzFile(file);
-
-console.log(res);

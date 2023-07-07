@@ -12,7 +12,7 @@ export function unpackTarFile (tarFileBuffer : Buffer) : Array<UnpackedFile> {
   while (offset < tarFile.byteLength) {
   // Read the header of the current tar entry
     const header = {
-      name: readString(tarFileView, offset, 100),
+      fileName: readString(tarFileView, offset, 100),
       mode: readString(tarFileView, offset + 100, 8),
       uid: readString(tarFileView, offset + 108, 8),
       gid: readString(tarFileView, offset + 116, 8),

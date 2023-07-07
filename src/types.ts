@@ -1,15 +1,12 @@
 export type UnpackedFile = {
-  header : UnpackedHeader;
+  header : Header;
   data : Buffer;
 }
 
+export type Header = TarHeader | ZipHeader;
 
-export interface UnpackedHeader extends Partial<OptionalHeaders> {
-  name : string,
-  checksum : string,
-}
-
-type OptionalHeaders = {
+export type TarHeader = {
+  fileName : string,
   mode : string,
   uid : string,
   gid : string,
@@ -25,4 +22,19 @@ type OptionalHeaders = {
   devminor : string,
   prefix : string,
   padding : string,
+}
+
+export type ZipHeader = {
+  version : number,
+  bitFlag : number,
+  compression : number,
+  lastModificationTime : number,
+  lastModificationDate : number,
+  checksum : number,
+  compressedSize : number,
+  uncompressedSize : number,
+  fileNameLength : number,
+  extraFieldLength : number,
+  fileName : string,
+  fileContentStart : number,
 }

@@ -1,57 +1,64 @@
-import zlib from "zlib";
-import { UnpackedFile } from "../types.js";
+import { inflateRawSync } from "zlib";
+import type { UnpackedFile, ZipHeader } from "../types.js";
 
 
 
 // eslint-disable-next-line max-lines-per-function
 export function extractZip (buffer : Buffer) : Array<UnpackedFile> {
-  if (buffer.readUInt32LE(0) !== 0x04034b50) {
-    throw new Error("Invalid zip file");
-  }
+  if (buffer.readUInt32LE(0) !== 0x04034b50) throw new Error("Invalid zip file");
 
   const result : Array<UnpackedFile> = [];
-
-
   let offset = 0;
   const centralDirectoryOffset = findCentralDirectoryOffset(buffer);
+
   while (offset < centralDirectoryOffset) {
     const headerSignature = buffer.readUInt32LE(offset);
 
     if (headerSignature === 0x04034b50) {
-      // const version = buffer.readUInt16LE(offset + 4);
-      // const bitFlag = buffer.readUint16LE(offset + 6);
-      const compression = buffer.readUInt16LE(offset + 8);
-      // const lastModificationTime = buffer.readUInt16LE(offset + 10);
-      // const lastModificationDate = buffer.readUInt16LE(offset + 12);
-      const CRC32Checksum = buffer.readUInt32LE(offset + 14);
-      const compressedSize = buffer.readUInt32LE(offset + 18);
-      // const uncompressedSize = buffer.readUInt32LE(offset + 22);
-      const fileNameLength = buffer.readUInt16LE(offset + 26);
-      const extraFieldLength = buffer.readUInt16LE(offset + 28);
+      const header : ZipHeader = {
+        version: buffer.readUInt16LE(offset + 4),
+        bitFlag: buffer.readUint16LE(offset + 6),
+        compression: buffer.readUInt16LE(offset + 8),
+        lastModificationTime: buffer.readUInt16LE(offset + 10),
+        lastModificationDate: buffer.readUInt16LE(offset + 12),
+        checksum: buffer.readUInt32LE(offset + 14),
+        compressedSize: buffer.readUInt32LE(offset + 18),
+        uncompressedSize: buffer.readUInt32LE(offset + 22),
+        fileNameLength: buffer.readUInt16LE(offset + 26),
+        extraFieldLength: buffer.readUInt16LE(offset + 28),
+        fileName: undefined,
+        fileContentStart: undefined,
+      };
 
-      const fileName = buffer.toString("utf8", offset + 30, offset + 30 + fileNameLength);
-      const fileContentStart = offset + 30 + fileNameLength;
-      const fileContent = buffer.subarray(fileContentStart, fileContentStart + extraFieldLength + compressedSize);
+      header.fileName = buffer.toString("utf8", offset + 30, offset + 30 + header.fileNameLength);
+      header.fileContentStart = offset + 30 + header.fileNameLength;
 
-      // Extract the file content
-      const decompressedContent = decompress(fileContent, compression);
+      let extraFieldOffset = header.fileContentStart;
+      let extraInfoOffset = 0;
+
+      while (extraFieldOffset < header.fileContentStart + header.extraFieldLength) {
+        const headerId = buffer.readUInt16LE(extraFieldOffset);
+        const dataSize = buffer.readUInt16LE(extraFieldOffset + 2);
+        if (headerId === 0x5455) extraInfoOffset += 4 + dataSize;
+        extraFieldOffset += 4 + dataSize;
+      }
+
+      const fileContent = buffer.subarray(
+        header.fileContentStart + extraInfoOffset,
+        header.fileContentStart + header.extraFieldLength + header.compressedSize,
+      );
+
       result.push({
-        data: decompressedContent,
-        header: {
-          name: fileName,
-          checksum: CRC32Checksum.toString(),
-        },
+        data: decompress(fileContent, header.compression),
+        header,
       });
 
-
-
-      offset += 30 + fileNameLength + extraFieldLength + compressedSize;
+      offset += 30 + header.fileNameLength + header.extraFieldLength + header.compressedSize;
     } else {
       throw new Error("Invalid signature");
     }
   }
 
-  console.log("Extraction complete!");
   return result;
 }
 
@@ -66,7 +73,7 @@ function findCentralDirectoryOffset (buffer : Buffer) : number {
 function decompress (data : Buffer, method ?: number) : Buffer {
   switch (method) {
     case 0: return data;
-    case 8: return zlib.inflateRawSync(new Uint8Array(data));
+    case 8: return inflateRawSync(data, {  });
     default: throw Error("Unknown Compression Method");
   }
 }
