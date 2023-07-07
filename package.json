@@ -1,11 +1,18 @@
 {
   "name": "nethere",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Download and unzip files, repos and more",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm ci && npx tsc -p tsconfig.build.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mapikit/nethere.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mapikit/nethere/issues"
   },
   "keywords": [
     "download",
