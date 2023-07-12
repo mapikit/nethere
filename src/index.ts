@@ -5,12 +5,17 @@ import { extractZip } from "./extraction-types/zip.js";
 import { unpackTarFile } from "./extraction-types/tar.js";
 import { unpackTgzFile } from "./extraction-types/tgz.js";
 
+type Options = {
+  repo ?: "github"|"gitlab"|"bitbucket";
+  branch ?: string;
+}
+
 export class Nethere {
-  public static async downloadToDisk (url : string, destination : string) : Promise<void> {
+  public static async downloadToDisk (url : string, destination : string, options : Options = {}) : Promise<void> {
     const fs = await import("fs");
     const path = await import("path");
 
-    const data = await this.downloadToMemory(url);
+    const data = await this.downloadToMemory(url, options);
     for(const file of data) {
       const fileDestination = file.header ? path.resolve(destination, file.header.fileName) : path.resolve(destination);
       fs.mkdirSync(path.dirname(fileDestination), { recursive: true });
@@ -19,7 +24,8 @@ export class Nethere {
     }
   }
 
-  public static async downloadToMemory (url : string) : Promise<UnpackedFile[]> {
+  public static async downloadToMemory (fileUrl : string, options : Options = {}) : Promise<UnpackedFile[]> {
+    const url = options.repo ? this.getRepoUrl(fileUrl, options) : fileUrl;
     return new Promise((resolve, reject) => {
       let fileData = Buffer.alloc(0);
       get(url, (response) => {
@@ -34,6 +40,7 @@ export class Nethere {
           fileData = Buffer.concat([fileData, chunk]);
         });
 
+        // TODO resolve this to better parse content-type header (header may contain more info, possibly use "includes")
         response.on("end", () => {
           switch(response.headers["content-type"]) {
             case "application/zip":
@@ -61,7 +68,7 @@ export class Nethere {
     const fileNameStartIndex = contentDisposition.indexOf("filename=") + "filename=".length;
     const fileNameRight = contentDisposition.slice(fileNameStartIndex);
     const semiIndex = fileNameRight.indexOf(";");
-    const fileName = fileNameRight.slice(0, semiIndex);
+    const fileName = fileNameRight.slice(0, semiIndex === -1 ? undefined : semiIndex);
 
     const fileTypes = fileName.split(".");
     const fileType = fileTypes[fileTypes.length-1];
@@ -76,6 +83,21 @@ export class Nethere {
       case "gz":
       case "tgz": return unpackTgzFile(data);
       default: return [{ header: undefined, data }];
+    }
+  }
+
+  private static getRepoUrl (url : string, options : Options) : string {
+    const purePath = url.replace("https://", "").replace("http://", "");
+    const [, owner, repo] = purePath.split("/");
+
+    const branch = options.branch ?? "master";
+    switch(options.repo) {
+      case "github":
+        return `https://github.com/${owner}/${repo}/archive/refs/heads/${branch}.zip`;
+      case "gitlab":
+        return `https://gitlab.com/${owner}/${repo}/-/archive/${branch}/${repo}-${branch}.zip`;
+      case "bitbucket":
+        return `https://bitbucket.org/${owner}/${repo}/get/${branch}.zip`;
     }
   }
 }
