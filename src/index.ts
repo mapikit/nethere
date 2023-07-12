@@ -42,6 +42,7 @@ export class Nethere {
 
         // TODO resolve this to better parse content-type header (header may contain more info, possibly use "includes")
         response.on("end", () => {
+          if(response.statusCode === 404) throw Error("File not found. Please check the url or repo branch");
           switch(response.headers["content-type"]) {
             case "application/zip":
               resolve(extractZip(fileData)); return;
