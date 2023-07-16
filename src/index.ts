@@ -40,22 +40,19 @@ export class Nethere {
           fileData = Buffer.concat([fileData, chunk]);
         });
 
-        // TODO resolve this to better parse content-type header (header may contain more info, possibly use "includes")
         response.on("end", () => {
           if(response.statusCode === 404) throw Error("File not found. Please check the url or repo branch");
-          switch(response.headers["content-type"]) {
-            case "application/zip":
-              resolve(extractZip(fileData)); return;
-            case "application/x-tar":
-            case "application/tar":
-              resolve(unpackTarFile(fileData)); return;
-            case "application/gzip":
-            case "application/tar+gzip":
-              resolve(unpackTgzFile(fileData)); return;
-            default:
-              const inferredType = this.inferTypeFromName(response.headers["content-disposition"]);
-              resolve(this.extractType(fileData, inferredType)); return;
-          }
+
+          const typeHeader = response.headers["content-type"];
+          const zipTypes = [ "application/zip" ];
+          const tarTypes = [ "application/x-tar", "application/tar" ];
+          const gzpTypes = [ "application/gzip", "tar+gzip" ];
+
+          if(zipTypes.some(type => typeHeader.includes(type))) return resolve(extractZip(fileData));
+          if(tarTypes.some(type => typeHeader.includes(type))) return resolve(unpackTarFile(fileData));
+          if(gzpTypes.some(type => typeHeader.includes(type))) return resolve(unpackTgzFile(fileData));
+          const inferredType = this.inferTypeFromName(response.headers["content-disposition"]);
+          return resolve(this.extractType(fileData, inferredType));
         });
 
         response.on("error", (error) => {
