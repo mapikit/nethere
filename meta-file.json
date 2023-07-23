@@ -1,0 +1,10 @@
+{
+  "entrypoint": "src/entrypoint.ts",
+  "name": "nethere",
+  "permissions": [
+    { 
+      "entity": "addonsFunctions",
+      "permissions": ["register"] 
+    }
+  ]
+}
