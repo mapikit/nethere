@@ -23,7 +23,7 @@ Nethere.downloadToMemory("https://link/to/my/file.tar")
   .then(result => console.log(result))
   .catch(console.error);
   /* 
-    Should log something like
+    Will log something like
     [
       {
         header: {
@@ -41,15 +41,33 @@ Nethere.downloadToMemory("https://link/to/my/file.tar")
 Nethere.downloadToDisk("https://link/to/my/file.tar", "./downloaded")
   .catch(console.error);
   /* 
-    Should create a directory 'downloaded' if necessary and save all extracted
+    Creates a directory 'downloaded' if necessary and save all extracted
     files inside such dir.
+  */
+```
+
+## Repo Download
+Nethere is also able to download the files in a repository from Github, Gitlab and Bitbucket. For this you need to add a second parameter specifying the repository. Optionally you can also specify the branch to download. By default, Nethere downloads the branch `master`.
+
+```typescript
+Nethere.downloadToMemory("https://github.com/mapikit/nethere", { repo: "github" })
+  .then(result => console.log(result))
+  .catch(console.error);
+  /* 
+    Will download and extract to memory the contents of the master branch on github
+  */
+
+Nethere.downloadToMemory("https://github.com/mapikit/nethere", { repo: "github", branch: "dev" })
+  .then(result => console.log(result))
+  .catch(console.error);
+  /* 
+    Will download and extract to memory the contents of the dev branch on github
   */
 ```
 
 ## Support
 ### URL Support
-Currently Nethere supports all urls that point directly to a file.  
-Support to urls that point to repos is planned.
+Currently Nethere supports all urls that point directly to a file or git repos (Github, Gitlab and Bitbucket).
 
 
 ### Compressed File Support
