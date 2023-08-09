@@ -51,7 +51,11 @@ export class Nethere {
           if(zipTypes.some(type => typeHeader.includes(type))) return resolve(extractZip(fileData));
           if(tarTypes.some(type => typeHeader.includes(type))) return resolve(unpackTarFile(fileData));
           if(gzpTypes.some(type => typeHeader.includes(type))) return resolve(unpackTgzFile(fileData));
-          const inferredType = this.inferTypeFromName(response.headers["content-disposition"]);
+
+          const urlSections = fileUrl.split("/");
+          const urlName = urlSections[urlSections.length - 1];
+          const contentDispositionName = this.nameFromDisposition(response.headers["content-disposition"]);
+          const inferredType = this.inferTypeFromName(contentDispositionName ?? urlName);
           return resolve(this.extractType(fileData, inferredType));
         });
 
@@ -62,12 +66,17 @@ export class Nethere {
     });
   }
 
-  private static inferTypeFromName (contentDisposition : string) : string {
+  private static nameFromDisposition (contentDisposition : string) : string {
+    if(!contentDisposition) return undefined;
+
     const fileNameStartIndex = contentDisposition.indexOf("filename=") + "filename=".length;
     const fileNameRight = contentDisposition.slice(fileNameStartIndex);
     const semiIndex = fileNameRight.indexOf(";");
     const fileName = fileNameRight.slice(0, semiIndex === -1 ? undefined : semiIndex);
+    return fileName;
+  }
 
+  private static inferTypeFromName (fileName : string) : string {
     const fileTypes = fileName.split(".");
     const fileType = fileTypes[fileTypes.length-1];
 

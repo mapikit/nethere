@@ -1,5 +1,5 @@
 {
-  "entrypoint": "src/entrypoint.ts",
+  "entrypoint": "./src/entrypoint.js",
   "name": "nethere",
   "permissions": [
     { 
