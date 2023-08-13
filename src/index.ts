@@ -18,9 +18,11 @@ export class Nethere {
     const data = await this.downloadToMemory(url, options);
     for(const file of data) {
       const fileDestination = file.header ? path.resolve(destination, file.header.fileName) : path.resolve(destination);
-      fs.mkdirSync(path.dirname(fileDestination), { recursive: true });
-      if(fs.statSync(fileDestination).isDirectory()) continue;
-      fs.writeFileSync(fileDestination, file.data);
+      if(file.data.length === 0) fs.mkdirSync(fileDestination, { recursive: true });
+      else {
+        fs.mkdirSync(path.dirname(fileDestination), { recursive: true });
+        fs.writeFileSync(fileDestination, file.data);
+      }
     }
   }
 

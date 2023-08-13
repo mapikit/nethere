@@ -1,11 +1,12 @@
 {
   "name": "nethere",
-  "version": "0.0.4",
+  "version": "0.1.1",
   "description": "Download and unzip files, repos and more",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm ci && npx tsc -p tsconfig.build.json"
+    "build": "npx tsc"
   },
   "repository": {
     "type": "git",
@@ -14,6 +15,10 @@
   "bugs": {
     "url": "https://github.com/mapikit/nethere/issues"
   },
+  "files": [
+    "./dist",
+    "meta-file.json"
+  ],
   "keywords": [
     "download",
     "downloader",
