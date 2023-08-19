@@ -1,6 +1,7 @@
 {
   "entrypoint": "./dist/entrypoint.js",
   "name": "nethere",
+  "configurationFormat": {},
   "permissions": [
     { 
       "entity": "addonsFunctions",

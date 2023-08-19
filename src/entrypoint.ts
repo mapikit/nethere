@@ -40,15 +40,16 @@ const downloadToDiskDefinition ={
   output: {},
 };
 
-export const configure = (brooker) : void => {
-  brooker.addonsFunctions.register(
+export const configure = (broker) : void => {
+  broker.addonsFunctions.register(
     (input : MemoryOptions) => Nethere.downloadToMemory(input.url, input.options),
     downloadToMemoryDefinition,
   );
-  brooker.addonsFunctions.register(
+  broker.addonsFunctions.register(
     (input : DiskOptions) => Nethere.downloadToDisk(input.url, input.destination, input.options),
     downloadToDiskDefinition,
   );
+  broker.done();
 };
 
 
